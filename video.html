@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Got Got video</title>
+    <style>
+        body { font-family: sans-serif; background: #000; color: #fff; text-align: center; padding: 15px; margin: 0; }
+        .back-link { color: #aaa; text-decoration: none; font-size: 14px; border: 1px solid #444; padding: 8px 15px; border-radius: 30px; transition: 0.3s; display: inline-block; margin-bottom: 20px; }
+        
+        .video-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 10px; 
+            padding: 5px; 
+        }
+
+        .video-card { 
+            background: #000000; 
+            padding: 5px; 
+            border-radius: 8px; 
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.953); 
+        }
+
+        video { 
+            width: 100%; 
+            border-radius: 5px; 
+            aspect-ratio: 16 / 9; 
+            display: block; 
+        }
+
+        h1 { margin-top: 10px; font-weight: 300; font-size: 20px; }
+
+        @media (min-width: 900px) {
+            .video-grid { 
+                grid-template-columns: 1fr 1fr 1fr; 
+                gap: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <br><a href="index.html" class="back-link">←Back To Home Page</a>
+    <h1>Got Got Video</h1>
+    <div class="video-grid">
+        <div class="video-card">
+            <video controls><source src="Download (19).mp4" type="video/mp4"></video>
+        </div>
+        <div class="video-card">
+            <video controls><source src="Download (27).mp4" type="video/mp4"></video>
+        </div>
+        <div class="video-card">
+            <video controls><source src="Download (28).mp4" type="video/mp4"></video>
+        </div>
+        <div class="video-card">
+            <video controls><source src="Download (29).mp4" type="video/mp4"></video>
+        </div>
+        <div class="video-card">
+            <video controls><source src="Download (30).mp4" type="video/mp4"></video>
+        </div>
+        <div class="video-card">
+            <video controls><source src="Download (31).mp4" type="video/mp4"></video>
+        </div>
+    </div>
+
+    <script>
+        const allVideos = document.querySelectorAll('video');
+
+        allVideos.forEach(video => {
+            video.addEventListener('play', () => {
+                // Check all videos on the page
+                allVideos.forEach(otherVideo => {
+                    // If it's not the one we just clicked, pause it
+                    if (otherVideo !== video) {
+                        otherVideo.pause();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
