@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - got got.com</title>
+    <style>
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background: #1a1a1a; 
+            margin: 0; 
+            color: white; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Welcome lekha-ke logo-r niche rakhar jonno padding bano hoyeche */
+            padding: 160px 20px 80px 20px; 
+        }
+
+        /* --- Logo Style (Fixed at Top with Background) --- */
+        .logo-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%; /* Background puro screen-e thakbe */
+            background: #1a1a1a; /* Body-r color-er sathe mil rekhe background */
+            padding: 15px 20px;
+            z-index: 1000; /* Jate Welcome lekha-ti er pechone dhaka pore */
+            display: flex;
+            justify-content: flex-start;
+        }
+        .logo-container img { height: 80px; width: auto; transition: 0.3s; }
+
+        .container { text-align: center; animation: fadeIn 1s ease-out; width: 100%; max-width: 800px; }
+        
+        h1 { font-size: 3rem; margin-bottom: 40px; letter-spacing: 2px; }
+        
+        /* --- Navigation Buttons --- */
+        .btn-container { display: flex; gap: 20px; justify-content: center; margin-bottom: 80px; }
+        .btn { 
+            padding: 12px 30px; 
+            font-size: 15px;    
+            color: white; 
+            text-decoration: none; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            transition: all 0.4s ease; 
+            border: 2px solid transparent; 
+            text-transform: uppercase; 
+        }
+        .btn-video { background: #ff4b2b; box-shadow: 0 5px 15px rgba(255, 75, 43, 0.4); }
+        .btn-photo { background: #008cff; box-shadow: 0 5px 15px rgba(0, 140, 255, 0.4); }
+        .btn:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2); border-color: white; }
+
+        /* --- Upload Card --- */
+        .upload-card {
+            background: #252525;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            max-width: 450px;
+            margin: 0 auto;
+            border: 1px solid #333;
+        }
+        .upload-card h2 { font-size: 1.5rem; margin-bottom: 15px; color: #008cff; }
+        .upload-card p { font-size: 14px; color: #bbb; margin-bottom: 30px; line-height: 1.5; }
+
+        .submit-btn { 
+            background: linear-gradient(45deg, #008cff, #0056b3); 
+            color: white; 
+            text-decoration: none;
+            padding: 18px 30px; 
+            border-radius: 50px; 
+            font-weight: bold; 
+            display: block;
+            transition: 0.4s; 
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+        .submit-btn:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 8px 20px rgba(0, 140, 255, 0.4); 
+            filter: brightness(1.1);
+        }
+
+        .footer-note { font-size: 11px; color: #555; margin-top: 20px; letter-spacing: 1px; }
+
+        /* Mobile Adjustment */
+        @media (max-width: 600px) {
+            body { padding-top: 130px; }
+            .logo-container img { height: 60px; }
+            h1 { font-size: 2rem; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="logo-container">
+        <a href="index.html">
+            <img src="logo.png" alt="Logo">
+        </a>
+    </div>
+
+    <div class="container">
+        <h1>Welcome to Got Got.com</h1>
+        
+        <div class="btn-container">
+            <a href="video.html" class="btn btn-video">Videos</a>
+            <a href="photo.html" class="btn btn-photo">Photos</a>
+        </div>
+
+        <div class="upload-card">
+            <h2>📤 Submit Content</h2>
+            <p>আপনার কাছে থাকা Got Got video আমাদের কে পাঠাতে নিচের Buton এ ক্লিক করুন</p>
+            
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLScxyUWojOR72KGwCiyOxA3cCDyyzVHyuD1E-NM2vPzQPznWxQ/viewform?usp=sf_link" 
+               target="_blank" 
+               class="submit-btn">
+                Click to Upload File
+            </a>
+
+            <div class="footer-note">
+                © 2026 GOT GOT.COM | ALL RIGHTS RESERVED
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
