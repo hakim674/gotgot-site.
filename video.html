@@ -3,95 +3,355 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> video-Got Got</title>
+    <title>Got Got - Video Gallery & Dashboard</title>  
     <style>
-        body { font-family: sans-serif; background: #000; color: #fff; text-align: center; padding: 15px; margin: 0; }
-        .back-link { color: #aaa; text-decoration: none; font-size: 14px; border: 1px solid #444; padding: 8px 15px; border-radius: 30px; transition: 0.3s; display: inline-block; margin-bottom: 20px; }
-        
+        :root {
+            --bg-color: #0b0b0d;
+            --card-bg: #16161a;
+            --border-color: #2a2a32;
+            --accent-color: #ff3b5c;
+            --accent-hover: #e02e4d;
+            --text-main: #ffffff;
+            --text-muted: #a0a0ab;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: var(--bg-color); 
+            color: var(--text-main); 
+            padding: 20px 15px; 
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            max-width: 1300px;
+            margin: 0 auto 25px auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .btn { 
+            color: var(--text-main); 
+            text-decoration: none; 
+            font-size: 14px; 
+            background: var(--card-bg);
+            border: 1px solid var(--border-color); 
+            padding: 9px 18px; 
+            border-radius: 30px; 
+            cursor: pointer;
+            transition: all 0.3s ease; 
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn:hover {
+            border-color: var(--accent-color);
+            background: rgba(255, 59, 92, 0.1);
+        }
+
+        .btn-primary {
+            background: var(--accent-color);
+            border-color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        h1 { 
+            font-weight: 600; 
+            font-size: 24px; 
+            background: linear-gradient(90deg, #fff, #a0a0ab);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Dashboard Upload Panel */
+        .dashboard-panel {
+            max-width: 700px;
+            margin: 0 auto 30px auto;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 20px;
+            display: none; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
+
+        .dashboard-panel.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dashboard-panel h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: var(--accent-color);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        /* Video Grid */
         .video-grid { 
+            max-width: 1300px;
+            margin: 0 auto;
             display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 10px; 
-            padding: 5px; 
+            grid-template-columns: 1fr; 
+            gap: 20px; 
         }
 
         .video-card { 
-            background: #000000; 
-            padding: 5px; 
-            border-radius: 8px; 
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.953); 
+            background: var(--card-bg); 
+            padding: 10px; 
+            border-radius: 12px; 
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); 
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .video-card:hover {
+            transform: translateY(-4px);
+            border-color: #444452;
+        }
+
+        .video-card.playing {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(255, 59, 92, 0.25);
         }
 
         video { 
             width: 100%; 
-            border-radius: 5px; 
+            border-radius: 8px; 
             aspect-ratio: 16 / 9; 
+            background: #000;
             display: block; 
+            object-fit: cover;
         }
 
-        h1 { margin-top: 10px; font-weight: 300; font-size: 20px; }
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            padding: 0 4px;
+        }
 
-        @media (min-width: 900px) {
-            .video-grid { 
-                grid-template-columns: 1fr 1fr 1fr; 
-                gap: 25px;
-            }
+        .video-title {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .delete-btn {
+            background: transparent;
+            border: none;
+            color: #ff4d4d;
+            cursor: pointer;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .delete-btn:hover {
+            background: rgba(255, 77, 77, 0.15);
+        }
+
+        @media (min-width: 600px) {
+            .video-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (min-width: 950px) {
+            .video-grid { grid-template-columns: repeat(3, 1fr); }
         }
     </style>
 </head>
 <body>
-    <br><a href="index.html" class="back-link">←Back To Home Page</a>
-    <h1>Got Got Video</h1>
-    <div class="video-grid">
+
+    <header>
+        <a href="index.html" class="btn">← Back To Home</a>
+        <h1>Got Got Video Gallery</h1>
+        <button class="btn btn-primary" onclick="toggleDashboard()">+ Upload Video</button>
+    </header>
+
+    <!-- Admin Upload Dashboard Panel -->
+    <div class="dashboard-panel" id="dashboardPanel">
+        <h2>📤 Upload New Video</h2>
+        <div class="form-group">
+            <label>Video Title (ভিডিওর নাম)</label>
+            <input type="text" id="videoTitleInput" class="form-control" placeholder="যেমন: New Video 2026">
+        </div>
+        <div class="form-group">
+            <label>Select Video File (.mp4)</label>
+            <input type="file" id="videoFileInput" class="form-control" accept="video/mp4,video/*">
+        </div>
+        <div style="display: flex; gap: 10px;">
+            <button class="btn btn-primary" onclick="uploadVideo()">Publish Video</button>
+            <button class="btn" onclick="toggleDashboard()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Video Grid -->
+    <div class="video-grid" id="videoGrid">
+        <!-- Default Videos -->
         <div class="video-card">
-            <video controls><source src="c.mp4" type="video/mp4"></video>
+            <video controls preload="metadata"><source src="c.mp4" type="video/mp4"></video>
+            <div class="card-footer"><span class="video-title">Video #01</span></div>
         </div>
         <div class="video-card">
-            <video controls><source src="WIN_20260529_20_40_51_Pro.mp4" type="video/mp4"></video>
+            <video controls preload="metadata"><source src="WIN_20260529_20_40_51_Pro.mp4" type="video/mp4"></video>
+            <div class="card-footer"><span class="video-title">Video #02</span></div>
         </div>
         <div class="video-card">
-            <video controls><source src="Download (28).mp4" type="video/mp4"></video>
+            <video controls preload="metadata"><source src="Download (28).mp4" type="video/mp4"></video>
+            <div class="card-footer"><span class="video-title">Video #03</span></div>
         </div>
         <div class="video-card">
-            <video controls><source src="Download (29).mp4" type="video/mp4"></video>
+            <video controls preload="metadata"><source src="Download (29).mp4" type="video/mp4"></video>
+            <div class="card-footer"><span class="video-title">Video #04</span></div>
         </div>
         <div class="video-card">
-            <video controls><source src="Download (30).mp4" type="video/mp4"></video>
+            <video controls preload="metadata"><source src="Download (30).mp4" type="video/mp4"></thought>
+            <div class="card-footer"><span class="video-title">Video #05</span></div>
         </div>
         <div class="video-card">
-            <video controls><source src="Download (31).mp4" type="video/mp4"></video>
+            <video controls preload="metadata"><source src="Download (31).mp4" type="video/mp4"></video>
+            <div class="card-footer"><span class="video-title">Video #06</span></div>
         </div>
-          <div class="video-card">
-            <video controls><source src="putki.mp4" type="video/mp4"></video>
+        <div class="video-card">
+            <video controls preload="metadata"><source src="putki.mp4" type="video/mp4"></video>
+            <div class="card-footer"><span class="video-title">Video #07</span></div>
         </div>
-         <div class="video-card">
-            <video controls><source src="kis.mp4" type="video/mp4"></video>
+        <div class="video-card">
+            <video controls preload="metadata"><source src="kis.mp4" type="video/mp4"></video>
+            <div class="card-footer"><span class="video-title">Video #08</span></div>
         </div>
-         <div class="video-card">
-            <video controls><source src="iski.mp4" type="video/mp4"></video>
+        <div class="video-card">
+            <video controls preload="metadata"><source src="iski.mp4" type="video/mp4"></video>
+            <div class="card-footer"><span class="video-title">Video #09</span></div>
         </div>
-         <div class="video-card">
-            <video controls><source src="xs.mp4" type="video/mp4"></video>
+        <div class="video-card">
+            <video controls preload="metadata"><source src="xs.mp4" type="video/mp4"></video>
+            <div class="card-footer"><span class="video-title">Video #10</span></div>
         </div>
-         <div class="video-card">
-            <video controls><source src="fi.mp4" type="video/mp4"></video>
+        <div class="video-card">
+            <video controls preload="metadata"><source src="fi.mp4" type="video/mp4"></video>
+            <div class="card-footer"><span class="video-title">Video #11</span></div>
         </div>
     </div>
 
     <script>
-        const allVideos = document.querySelectorAll('video');
+        // ড্যাশবোর্ড টগল করার ফাংশন
+        function toggleDashboard() {
+            const panel = document.getElementById('dashboardPanel');
+            panel.classList.toggle('active');
+        }
 
-        allVideos.forEach(video => {
-            video.addEventListener('play', () => {
-                // Check all videos on the page
-                allVideos.forEach(otherVideo => {
-                    // If it's not the one we just clicked, pause it
-                    if (otherVideo !== video) {
-                        otherVideo.pause();
-                    }
-                });
+        // নতুন ভিডিও আপলোড করার ফাংশন
+        function uploadVideo() {
+            const titleInput = document.getElementById('videoTitleInput');
+            const fileInput = document.getElementById('videoFileInput');
+            
+            if (!titleInput.value || fileInput.files.length === 0) {
+                alert('দয়া করে ভিডিওর নাম এবং একটি ফাইল সিলেক্ট করুন!');
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const videoUrl = URL.createObjectURL(file);
+            const videoGrid = document.getElementById('videoGrid');
+
+            // নতুন ভিডিও কার্ড তৈরি করা
+            const newCard = document.createElement('div');
+            newCard.className = 'video-card';
+            newCard.innerHTML = `
+                <video controls preload="metadata"><source src="${videoUrl}" type="video/mp4"></video>
+                <div class="card-footer">
+                    <span class="video-title">${titleInput.value}</span>
+                    <button class="delete-btn" onclick="this.closest('.video-card').remove()">Delete</button>
+                </div>
+            `;
+
+            // নতুন কার্ডটি গ্রিডের একদম উপরে যুক্ত হবে
+            videoGrid.prepend(newCard);
+
+            // ফর্ম রিসেট ও ড্যাশবোর্ড বন্ধ করা
+            titleInput.value = '';
+            fileInput.value = '';
+            toggleDashboard();
+            
+            // নতুন ভিডিও প্লে হলে অন্যগুলো পজ করার লজিক আপডেট করা
+            setupVideoEvents();
+        }
+
+        // ভিডিও প্লে হলে অন্যগুলো পজ করার হ্যান্ডলার
+        function setupVideoEvents() {
+            const allVideos = document.querySelectorAll('video');
+
+            allVideos.forEach(video => {
+                // পুরানো ইভেন্ট লিসেনার যাতে ডাবল না হয়, তাই আগেরটি সরিয়ে নতুন দেওয়া ভালো
+                video.onplay = () => {
+                    allVideos.forEach(otherVideo => {
+                        if (otherVideo !== video) {
+                            otherVideo.pause();
+                            otherVideo.closest('.video-card').classList.remove('playing');
+                        }
+                    });
+                    video.closest('.video-card').classList.add('playing');
+                };
+
+                video.onpause = () => {
+                    video.closest('.video-card').classList.remove('playing');
+                };
+
+                video.onended = () => {
+                    video.closest('.video-card').classList.remove('playing');
+                };
             });
-        });
+        }
+
+        // প্রথমবার পেজ লোড হলে কল হবে
+        setupVideoEvents();
     </script>
 </body>
-</html>
